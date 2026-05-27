@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-
+import { useRouter } from 'next/navigation';
 const PDF_URL = '/external-doc/scaling-Playbook.pdf';
 const OPTIN_API_URL = 'https://getnos.io/dexkor-optin-page/main.php';
 
@@ -54,6 +54,7 @@ const validatePhone = (cc, phone) => {
 };
 
 export default function OptinForm() {
+  const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [cc, setCc] = useState('+91');
@@ -130,10 +131,8 @@ async function handleSubmit(e) {
 
     triggerDownload();
 
-    if (data.success && data.redirect) {
-
-      window.location.href = data.redirect;
-
+    if (response.status === 200) {
+      router.push('/dexkor-new-lp');
     }
 
   } catch (error) {
