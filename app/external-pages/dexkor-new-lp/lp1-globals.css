@@ -1,0 +1,226 @@
+/* Scoped styles for Landing Page 1 */
+
+  /* Gradient border for the opt-in form (mask trick) */
+  .form-gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    padding: 1.5px;
+    background: linear-gradient(135deg, rgba(44, 138, 229, 0.4), transparent 60%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Animated diamond icon (clip-path) */
+  .diamond-icon {
+    clip-path: polygon(50% 0, 60% 35%, 100% 50%, 60% 65%, 50% 100%, 40% 65%, 0 50%, 40% 35%);
+  }
+
+  /* Download button shine ::before */
+  .download-shine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 75%;
+    height: 100%;
+    background: linear-gradient(
+      115deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.45) 45%,
+      rgba(255, 255, 255, 0.85) 50%,
+      rgba(255, 255, 255, 0.45) 55%,
+      transparent 80%
+    );
+    transform: skewX(-22deg);
+    animation: shine 2.4s ease-in-out infinite;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .download-shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, transparent 100%);
+    border-radius: 10px 10px 0 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .download-shine > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Final CTA gradient shine */
+  .final-cta-shine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 75%;
+    height: 100%;
+    background: linear-gradient(
+      115deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.45) 45%,
+      rgba(255, 255, 255, 0.85) 50%,
+      rgba(255, 255, 255, 0.45) 55%,
+      transparent 80%
+    );
+    transform: skewX(-22deg);
+    animation: shine 2.4s ease-in-out infinite;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .final-cta-shine > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Progress bar fill shine ::after */
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    animation: progressShine 1.6s ease-in-out infinite;
+  }
+
+  /* Input that has a green validation tick — used as :is(...) class .valid */
+  .input-valid {
+    border-color: #10b981 !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2310B981' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 38px !important;
+  }
+  .input-error {
+    border-color: #ef4444 !important;
+  }
+
+  /* Live dot pulse */
+  .live-dot {
+    position: relative;
+  }
+  .live-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: #10b981;
+    opacity: 0.4;
+    animation: ring 1.6s ease-out infinite;
+  }
+
+  /* Ticker avatar dot */
+  .ticker-avatar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #10b981;
+    border: 2px solid #fff;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+
+  /* Cover kicker — horizontal lines on both sides */
+  .cover-kicker::before,
+  .cover-kicker::after {
+    content: '';
+    width: 14px;
+    height: 1px;
+    background: #5ba8ec;
+    flex-shrink: 0;
+  }
+
+  /* Featured quote decorative big quote mark */
+  .featured-quote::after {
+    content: '"';
+    position: absolute;
+    top: 24px;
+    right: 56px;
+    font-family: 'Fraunces', serif;
+    font-size: 140px;
+    line-height: 1;
+    color: #5ba8ec;
+    opacity: 0.35;
+    font-weight: 600;
+    pointer-events: none;
+  }
+  .featured-quote::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #2c8ae5;
+    opacity: 0.15;
+    filter: blur(20px);
+    pointer-events: none;
+  }
+
+  /* Expect card diamond marker */
+  .expect-card-h::before {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background: #5ba8ec;
+    clip-path: polygon(50% 0, 60% 35%, 100% 50%, 60% 65%, 50% 100%, 40% 65%, 0 50%, 40% 35%);
+  }
+
+  /* Success circle little check badge */
+  .success-circle-check::before {
+    content: '✓';
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 28px;
+    height: 28px;
+    background: #10b981;
+    color: #fff;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 0 4px 10px -2px rgba(16, 185, 129, 0.5);
+  }
+  .success-circle-check::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 2px solid #2c8ae5;
+    opacity: 0.3;
+    animation: ring 2s ease-out infinite;
+  }
+
+  /* "Live" indicator in ticker meta */
+  .live-indicator::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    animation: blink 1.4s ease-in-out infinite;
+    margin-right: 4px;
+    display: inline-block;
+  }
+

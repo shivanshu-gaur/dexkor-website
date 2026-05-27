@@ -12,12 +12,25 @@ import CompanyMegaMenu from "./CompanyMegaMenu";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "./ThemeToggle";
 import ExpertFormModal from "../ExpertFormModal";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const pathname = usePathname();
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isExpertModalOpen, setIsExpertModalOpen] = useState(false);
+
+  // Hide navbar on external landing pages used for ads
+  if (
+    pathname?.startsWith("/dexkor-optin-page") ||
+    pathname?.startsWith("/dexkor-new-lp") ||
+    pathname?.startsWith("/dexkor-thank-you") ||
+    pathname?.startsWith("/external-pages")
+  ) {
+    return null;
+  }
+
 
   useEffect(() => {
     const handleScroll = () => {
