@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Script from "next/script";
 import "../lp1-globals.css";
 
 import ConfirmBand from "@/components/external-pages/landingpage-1/ConfirmBand";
@@ -148,6 +149,11 @@ const tickerMessages = [
 export default function ThankYouPage() {
   return (
     <div className="-mt-16 overflow-hidden bg-white text-[#1F2937] font-sans antialiased">
+      <Script id="fb-pixel-lead" strategy="afterInteractive">
+        {`
+          fbq('track', 'Lead');
+        `}
+      </Script>
       <ConfirmBand />
       <Navbar variant="thanks" />
 
