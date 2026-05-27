@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-const PDF_URL = '/scaling-Playbook.pdf';
+const PDF_URL = '/external-doc/scaling-Playbook.pdf';
 const OPTIN_API_URL = 'https://getnos.io/dexkor-optin-page/main.php';
 
 const COUNTRIES = [
