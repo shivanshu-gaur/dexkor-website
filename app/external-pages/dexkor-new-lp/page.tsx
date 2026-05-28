@@ -320,7 +320,7 @@ export default function OptinPage() {
             and double their output.
           </p>
           <div
-            className="font-mono text-[#6B7585] font-semibold"
+            className="font-mono text-white font-semibold"
             style={{
               fontSize: 11,
               letterSpacing: ".14em",
@@ -328,7 +328,7 @@ export default function OptinPage() {
             }}
           >
             From the introduction ·{" "}
-            <b className="text-[#0F1B3D] font-bold">The Scaling CX Playbook</b>
+            <b className="!text-white font-bold">The Scaling CX Playbook</b>
           </div>
         </div>
       </section>

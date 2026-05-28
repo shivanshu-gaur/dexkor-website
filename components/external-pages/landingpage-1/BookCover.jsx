@@ -121,6 +121,7 @@ export default function BookCover() {
                 fontSize: 56,
                 lineHeight: 0.92,
                 letterSpacing: '-.03em',
+                color:"white"
               }}
             >
               <span className="block">The</span>
