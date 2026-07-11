@@ -174,6 +174,14 @@ export default function RootLayout({
             document.head.appendChild(o)}initApollo();
           `}
         </Script>
+        <Script
+          id="vtag-ai-js"
+          async
+          src="https://r2.leadsy.ai/tag.js"
+          data-pid="16wsFf1z6SunN47Ky"
+          data-version="062024"
+          strategy="afterInteractive"
+        />
         <ThemeProvider>
           <Navbar />
           <div className="pt-16">
