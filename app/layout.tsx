@@ -71,6 +71,8 @@ const fontMono = Geist_Mono({
   variable: "--font-mono",
 })
 
+import PageWrapper from "@/components/layout/PageWrapper";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -83,43 +85,7 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, satoshi.variable, "font-sans")}
     >
       <body className="bg-background text-foreground transition-colors duration-300">
-        {/* <Script
-          src="https://chat-widget-snowy.vercel.app/static/js/v1/widget.js"
-          strategy="afterInteractive"
-        />
-        <Script id="dexkor-widget-init" strategy="afterInteractive">
-          {`
-            (function() {
-              let attempts = 0;
-              const maxAttempts = 30; // 15 seconds max
-              
-              function initDexkor() {
-                if (window.initChatWidget) {
-                  window.initChatWidget({
-                    hostUrl: window.location.origin,
-                    uniquePartnerId: '6797656ca8375033a8b60ae6',
-                    userEmail: "",
-                    customerCode: "",
-                    userName: "",
-                    userNumber: "",
-                  });
-                  console.log("DexKor Widget: Initialized successfully");
-                } else if (attempts < maxAttempts) {
-                  attempts++;
-                  setTimeout(initDexkor, 500);
-                } else {
-                  console.error("DexKor Widget: Failed to load after 15s");
-                }
-              }
-
-              if (document.readyState === 'complete') {
-                initDexkor();
-              } else {
-                window.addEventListener('load', initDexkor);
-              }
-            })();
-          `}
-        </Script> */}
+        {/* ... (scripts) ... */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-XB56M0QBPG"
           strategy="afterInteractive"
@@ -184,9 +150,9 @@ export default function RootLayout({
         />
         <ThemeProvider>
           <Navbar />
-          <div className="pt-16">
+          <PageWrapper>
             {children}
-          </div>
+          </PageWrapper>
         </ThemeProvider>
       </body>
     </html>
