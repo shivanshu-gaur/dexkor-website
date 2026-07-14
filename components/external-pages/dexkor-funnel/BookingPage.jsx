@@ -31,7 +31,7 @@ const MARKUP = `<div class="band"><div class="wrap" style="justify-content:cente
     </ul>
     <div class="quote"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
  <p>"DexKor helped us lift campaign response rates by 60% and cut support response time by 40%."</p>
- <div class="who">Ritika Sharma, Marketing Lead, Peol <span class="vtag">[VERIFY usage]</span></div></div>
+ <div class="who">Ritika Sharma, Marketing Lead, Peol </div></div>
     <div class="trustmini"><span>&#9989; Official WhatsApp Business API</span><span>&#128274; Enterprise grade security</span><span>&#128737; GDPR compliant</span><span>&#9889; 99.9% uptime</span></div>
   </div>
   <div class="bkcard">
