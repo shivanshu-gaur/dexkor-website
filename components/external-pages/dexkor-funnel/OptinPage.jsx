@@ -99,7 +99,6 @@ const MARKUP = `<div class="band" id="band"><div class="wrap"><span class="dot">
     <p class="msub">Tell us where to send your personalised switch plan and audit summary.</p>
     <div class="field" id="fName"><label for="iName">Full name</label><input type="text" id="iName" placeholder="Aarav Sharma"><div class="err">Please enter your name</div></div>
     <div class="field" id="fEmail"><label for="iEmail">Work email</label><input type="email" id="iEmail" placeholder="you@company.com"><div class="err">Please enter a valid email</div></div>
-    <div class="field" id="fWa"><label for="iWa">WhatsApp number</label><input type="tel" id="iWa" placeholder="+91 90000 00000"><div class="err">Enter a valid WhatsApp number</div></div>
     <div class="field" id="fBrand"><label for="iBrand">Brand or company</label><input type="text" id="iBrand" placeholder="Your company name"></div>
     <button class="btn lg shine" id="leadSubmit" style="width:100%;justify-content:center">Show me my fix &rarr;</button>
     <div class="fine">No spam. We use this only to send your savings plan and open your results.</div>
@@ -207,16 +206,15 @@ function initPage(__nav) {
   $("mx").addEventListener("click",()=>$("ov").classList.remove("show"));
   $("ov").addEventListener("click",e=>{if(e.target===$("ov"))$("ov").classList.remove("show");});
   $("leadSubmit").addEventListener("click",function(){
-    const name=$("iName").value.trim(), wa=$("iWa").value.trim(), email=$("iEmail").value.trim().toLowerCase();
+    const name=$("iName").value.trim(), email=$("iEmail").value.trim().toLowerCase();
     let ok=true;
     if(!name){$("fName").classList.add("bad");ok=false}else $("fName").classList.remove("bad");
     if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){$("fEmail").classList.add("bad");ok=false}else $("fEmail").classList.remove("bad");
-    if(wa.replace(/\D/g,"").length<10){$("fWa").classList.add("bad");ok=false}else $("fWa").classList.remove("bad");
     if(!ok)return;
     const s=window._score||{s:0,m:0,v:0,p:"",leak:0};
     const fn=(name.split(/\s+/)[0]||"").slice(0,24);
     const company=$("iBrand").value.trim();
-    const payload={name:name,email:email,company:company,phone:wa,businessType:s.p||"",revenue:String(s.leak||0),leaks:"Markup leak "+(s.m||0)+"% / monthly messages "+(s.v||0),flow:FLOWKEY,markup_pct:s.m,monthly_messages:s.v,platform:s.p,monthly_leak:s.leak,ts:new Date().toISOString()};
+    const payload={name:name,email:email,company:company,phone:"",businessType:s.p||"",revenue:String(s.leak||0),leaks:"Markup leak "+(s.m||0)+"% / monthly messages "+(s.v||0),flow:FLOWKEY,markup_pct:s.m,monthly_messages:s.v,platform:s.p,monthly_leak:s.leak,ts:new Date().toISOString()};
     try{if(LEAD_WEBHOOK_URL){fetch(LEAD_WEBHOOK_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload),keepalive:true}).catch(()=>{});}}catch(e){}
     $("leadForm").style.display="none"; $("redir").classList.add("show");
     const q="?s="+s.s+"&m="+s.m+"&v="+s.v+"&p="+encodeURIComponent(s.p)+"&leak="+s.leak+"&n="+encodeURIComponent(fn);
