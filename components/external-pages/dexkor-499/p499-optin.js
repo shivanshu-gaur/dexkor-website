@@ -108,14 +108,15 @@ document.querySelectorAll(".cta-book").forEach(b=>b.addEventListener("click",ope
 $("mx").addEventListener("click",()=>$("ov").classList.remove("show"));
 $("ov").addEventListener("click",e=>{if(e.target===$("ov"))$("ov").classList.remove("show");});
 $("leadSubmit").addEventListener("click",async function(){
-  const name=$("iName").value.trim(), wa=$("iWa").value.trim();
+  const name=$("iName").value.trim(), wa=$("iWa").value.trim(), email=$("iEmail").value.trim();
   let ok=true;
   if(!name){$("fName").classList.add("bad");ok=false}else $("fName").classList.remove("bad");
   if(wa.replace(/\D/g,"").length<10){$("fWa").classList.add("bad");ok=false}else $("fWa").classList.remove("bad");
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){$("fEmail").classList.add("bad");ok=false}else $("fEmail").classList.remove("bad");
   if(!ok)return;
   const s=window._score||{s:0,m:0,v:0,p:"",leak:0};
   const fn=(name.split(/\s+/)[0]||"").slice(0,24);
-  const payload={name:name,first_name:fn,whatsapp:wa,brand:$("iBrand").value.trim(),flow:FLOWKEY,markup_pct:s.m,monthly_messages:s.v,platform:s.p,monthly_leak:s.leak,ts:new Date().toISOString()};
+  const payload={name:name,first_name:fn,whatsapp:wa,email:email,brand:$("iBrand").value.trim(),flow:FLOWKEY,markup_pct:s.m,monthly_messages:s.v,platform:s.p,monthly_leak:s.leak,ts:new Date().toISOString()};
 
   try{if(LEAD_WEBHOOK_URL)navigator.sendBeacon(LEAD_WEBHOOK_URL,new Blob([JSON.stringify(payload)],{type:"application/json"}));}catch(e){}
 
