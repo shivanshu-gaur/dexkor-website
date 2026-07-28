@@ -111,7 +111,42 @@ $("leadSubmit").addEventListener("click",async function(){
   const name=$("iName").value.trim(), email=$("iEmail").value.trim();
   let ok=true;
   if(!name){$("fName").classList.add("bad");ok=false}else $("fName").classList.remove("bad");
-  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){$("fEmail").classList.add("bad");ok=false}else $("fEmail").classList.remove("bad");
+
+  const emailErr = $("fEmail").querySelector(".err");
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    if(emailErr) emailErr.textContent = "Enter a valid email address";
+    $("fEmail").classList.add("bad");
+    ok=false;
+  }else{
+    const blockedDomains = [
+      "gmail.com",
+      "yahoo.com",
+      "yahoo.co.in",
+      "hotmail.com",
+      "outlook.com",
+      "live.com",
+      "msn.com",
+      "icloud.com",
+      "me.com",
+      "aol.com",
+      "proton.me",
+      "protonmail.com",
+      "rediffmail.com",
+      "mail.com",
+      "gmx.com",
+      "yandex.com",
+      "inbox.com"
+    ];
+    const domain = email.substring(email.lastIndexOf("@") + 1).toLowerCase();
+    if(blockedDomains.includes(domain)){
+      if(emailErr) emailErr.textContent = "Please enter a company email address";
+      $("fEmail").classList.add("bad");
+      ok=false;
+    }else{
+      $("fEmail").classList.remove("bad");
+    }
+  }
+  
   if(!ok)return;
   const s=window._score||{s:0,m:0,v:0,p:"",leak:0};
   const fn=(name.split(/\s+/)[0]||"").slice(0,24);
