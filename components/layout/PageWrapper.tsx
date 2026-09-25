@@ -9,7 +9,8 @@ export default function PageWrapper({ children }: { children: React.ReactNode })
   
   const isExternalPage = 
     pathname?.startsWith("/dexkor-") || 
-    pathname?.startsWith("/external-pages");
+    pathname?.startsWith("/external-pages") ||
+    pathname?.startsWith("/cost-lead");
 
   return (
     <div className={cn(!isExternalPage && "pt-16")}>

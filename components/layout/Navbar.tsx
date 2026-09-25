@@ -24,7 +24,8 @@ const Navbar = () => {
   // Hide navbar on external landing pages used for ads
   if (
     pathname?.startsWith("/dexkor-") ||
-    pathname?.startsWith("/external-pages")
+    pathname?.startsWith("/external-pages")||
+    pathname?.startsWith("/cost-lead")
   ) {
     return null;
   }

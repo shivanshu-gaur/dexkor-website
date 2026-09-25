@@ -75,8 +75,12 @@ const nextConfig = {
         destination: '/external-pages/dexkor-499/order',
       },
       {
-        source: '/dexkor-499-thankyou.html',
-        destination: '/external-pages/dexkor-499/thankyou',
+        source: '/cost-lead',
+        destination: '/external-pages/cost-lead',
+      },
+      {
+        source: '/dexkor-reduce-message-cost-lead',
+        destination: '/external-pages/cost-lead',
       },
     ]
   },
