@@ -108,7 +108,7 @@ export default function RootLayout({
             })(window, document, "clarity", "script", "wpb1pgay60");
           `}
         </Script>
-       {/*  Script for  facebook from Getnos  */}
+        {/*  Script for  facebook from Getnos  */}
         <Script id="facebook-pixel" strategy="afterInteractive">
           {`
             !function(f,b,e,v,n,t,s)
@@ -148,31 +148,6 @@ export default function RootLayout({
           data-version="062024"
           strategy="afterInteractive"
         />
-        {/* DexKor Chat Widget */}
-        <Script
-          id="dexkor-chat-widget"
-          src="https://chat-widget-snowy.vercel.app/static/js/v1/widget.js"
-          strategy="afterInteractive"
-        />
-        <Script id="dexkor-chat-widget-init" strategy="afterInteractive">
-          {`
-            function initDexKorWidget() {
-              if (typeof window !== 'undefined' && window.initChatWidget) {
-                window.initChatWidget({
-                  hostUrl: window.location.origin,
-                  uniquePartnerId: '6a2fa87589d3253eeb904ee1',
-                  customerCode: "",
-                  email: "",
-                  name: "",
-                  phone: "",
-                });
-              } else {
-                setTimeout(initDexKorWidget, 100);
-              }
-            }
-            initDexKorWidget();
-          `}
-        </Script>
         <ThemeProvider>
           <Navbar />
           <PageWrapper>
