@@ -45,7 +45,7 @@ export default function Hero() {
               <span className="h-2 w-2 flex-none animate-[live_1.5s_ease-in-out_infinite] rounded-full bg-[var(--wa,#25d366)] shadow-[0_0_12px_var(--wa,#25d366)]" />
               THE #1 WHATSAPP-FIRST CRM FOR GROWING BUSINESSES
             </span>
-
+{/* 
             <h1 className="mb-5 mt-5 text-[clamp(33px,7vw,65px)] font-black leading-[1.05] tracking-[-1px] text-white sm:mb-[22px] sm:leading-[1.02] sm:tracking-[-1.5px] lg:tracking-[-2.5px]">
               Your customers are already on WhatsApp.{" "}
               <em className="relative not-italic text-[color:var(--accent,#25d366)] after:absolute after:inset-x-0 after:-bottom-0.5 after:h-1.5 after:rounded after:bg-[var(--accent,#25d366)] after:opacity-25 after:content-['']">
@@ -56,8 +56,19 @@ export default function Hero() {
             <p className="mb-7 max-w-[620px] text-[17px] leading-[1.55] text-[color:var(--muted,#97a6c7)] sm:mb-[26px] sm:text-[19px]">
               DexKor is the only CRM + Support platform built around WhatsApp, so sales and support teams can handle
               customer conversations, follow-ups and service from one place.
-            </p>
+            </p> */}
 
+            <h1 className="mb-5 mt-5 text-[clamp(33px,7vw,65px)] font-black leading-[1.05] tracking-[-1px] text-white sm:mb-[22px] sm:leading-[1.02] sm:tracking-[-1.5px] lg:tracking-[-2.5px]">
+              Your customers are already on WhatsApp.{" "}
+              <em className="relative not-italic text-[#25d366] after:absolute after:inset-x-0 after:-bottom-0.5 after:h-1.5 after:rounded after:bg-[#25d366] after:opacity-25 after:content-['']">
+                Manage the whole conversation there.
+              </em>
+            </h1>
+
+            <p className="mb-7 max-w-[620px] text-[17px] leading-[1.55] text-[#97a6c7] sm:mb-[26px] sm:text-[19px]">
+              DexKor is the only CRM + Support platform built around WhatsApp, so sales and support teams can handle
+              customer conversations, follow-ups and service from one place.
+            </p>
             <ul className="mb-7 mx-auto w-full max-w-md list-none p-0 text-left lg:mx-0 lg:max-w-none">
               {BULLETS.map((b, i) => (
                 <li key={i} className="flex items-start gap-3 py-2 text-[15px] font-medium text-[#dfe7fb] sm:text-[16px]">
