@@ -45,18 +45,6 @@ export default function Hero() {
               <span className="h-2 w-2 flex-none animate-[live_1.5s_ease-in-out_infinite] rounded-full bg-[var(--wa,#25d366)] shadow-[0_0_12px_var(--wa,#25d366)]" />
               THE #1 WHATSAPP-FIRST CRM FOR GROWING BUSINESSES
             </span>
-{/* 
-            <h1 className="mb-5 mt-5 text-[clamp(33px,7vw,65px)] font-black leading-[1.05] tracking-[-1px] text-white sm:mb-[22px] sm:leading-[1.02] sm:tracking-[-1.5px] lg:tracking-[-2.5px]">
-              Your customers are already on WhatsApp.{" "}
-              <em className="relative not-italic text-[color:var(--accent,#25d366)] after:absolute after:inset-x-0 after:-bottom-0.5 after:h-1.5 after:rounded after:bg-[var(--accent,#25d366)] after:opacity-25 after:content-['']">
-                Manage the whole conversation there.
-              </em>
-            </h1>
-
-            <p className="mb-7 max-w-[620px] text-[17px] leading-[1.55] text-[color:var(--muted,#97a6c7)] sm:mb-[26px] sm:text-[19px]">
-              DexKor is the only CRM + Support platform built around WhatsApp, so sales and support teams can handle
-              customer conversations, follow-ups and service from one place.
-            </p> */}
 
             <h1 className="mb-5 mt-5 text-[clamp(33px,7vw,65px)] font-black leading-[1.05] tracking-[-1px] text-white sm:mb-[22px] sm:leading-[1.02] sm:tracking-[-1.5px] lg:tracking-[-2.5px]">
               Your customers are already on WhatsApp.{" "}
@@ -69,6 +57,7 @@ export default function Hero() {
               DexKor is the only CRM + Support platform built around WhatsApp, so sales and support teams can handle
               customer conversations, follow-ups and service from one place.
             </p>
+
             <ul className="mb-7 mx-auto w-full max-w-md list-none p-0 text-left lg:mx-0 lg:max-w-none">
               {BULLETS.map((b, i) => (
                 <li key={i} className="flex items-start gap-3 py-2 text-[15px] font-medium text-[#dfe7fb] sm:text-[16px]">
@@ -83,7 +72,7 @@ export default function Hero() {
             {/* CTA */}
             <div className="mt-2 flex w-full flex-col items-center gap-4 lg:items-start">
               <CTAButton>Show Me How DexKor Works</CTAButton>
-              <div className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[13px] text-[color:var(--muted,#97a6c7)] lg:justify-start">
+              <div className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 text-[13px] text-[#97a6c7] lg:justify-start">
                 {CTA_SUB.map((t) => (
                   <span key={t} className="inline-flex items-center gap-1.5">
                     <Check className="h-3.5 w-3.5" /> {t}
@@ -93,16 +82,16 @@ export default function Hero() {
             </div>
 
             {/* trust strip */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 border-t border-[color:var(--line,rgba(255,255,255,.1))] pt-5 text-[13px] text-[color:var(--muted,#97a6c7)] sm:mt-9 sm:py-4 lg:justify-start">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 border-t border-[color:var(--line,rgba(255,255,255,.1))] pt-5 text-[13px] text-[#97a6c7] sm:mt-9 sm:py-4 lg:justify-start">
               <div className="flex gap-0.5 text-[color:var(--gold,#ffb020)]">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="h-4 w-4" />
                 ))}
               </div>
               <div><b className="text-white">4.8/5</b> from 320+ reviews</div>
-              <div className="hidden h-7 w-px bg-[color:var(--line,rgba(255,255,255,.1))] sm:block" />
+              <div className="hidden h-7 w-px bg-[rgba(255,255,255,.1)] sm:block" />
               <div><b className="text-white">500+</b> teams onboard</div>
-              <div className="hidden h-7 w-px bg-[color:var(--line,rgba(255,255,255,.1))] sm:block" />
+              <div className="hidden h-7 w-px bg-[rgba(255,255,255,.1)] sm:block" />
               <div><b className="text-white">1M+</b> monthly conversations</div>
             </div>
           </div>
@@ -111,7 +100,7 @@ export default function Hero() {
           <div className="relative flex w-full items-center justify-center">
             <div className="pointer-events-none absolute h-full w-full bg-[radial-gradient(circle,rgba(37,211,102,.25),transparent_60%)] blur-[40px]" />
 
-            {/* floating badges */}
+            {/* floating badges — tucked in on mobile so they never clip, hang off on larger screens */}
             <div className="absolute right-1 top-4 z-[3] flex animate-[floaty_4s_ease-in-out_infinite] items-center gap-2 rounded-xl bg-white px-3 py-2 text-[12px] font-bold text-[#04150b] shadow-[0_20px_40px_rgba(0,0,0,.35)] sm:-right-[30px] sm:top-[60px] sm:px-3.5 sm:py-2.5 sm:text-[13px]">
               <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5 text-[var(--wa,#25d366)]">
                 <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="currentColor" />
@@ -126,7 +115,7 @@ export default function Hero() {
               Response in 47s
             </div>
 
-            {/* phone */}
+            {/* phone — fluid width, capped, so it never overflows small screens */}
             <div className="float relative z-[1] w-full max-w-[300px] rounded-[36px] border-2 border-[#1f2c33] bg-[#111b21] p-3 shadow-[0_30px_70px_-20px_rgba(0,0,0,.6),0_0_70px_-18px_rgba(37,211,102,.28),inset_0_1px_0_rgba(255,255,255,.06)] ring-1 ring-white/5 sm:max-w-[320px]">
               <div className="mx-auto mb-2 h-[22px] w-[100px] rounded-b-[14px] bg-black" />
 
@@ -213,6 +202,12 @@ export default function Hero() {
           </div>
         </div>
       </div>
+
+      {/* keyframes used by the animate-[...] utilities above */}
+      <style>{`
+        @keyframes live { 0%,100%{opacity:1} 50%{opacity:.4} }
+        @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+      `}</style>
     </section>
   );
 }

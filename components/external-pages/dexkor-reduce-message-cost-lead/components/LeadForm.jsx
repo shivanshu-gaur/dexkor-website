@@ -14,6 +14,19 @@ import {
   submitLead,
   getTrackingFields,
 } from "../services/leadService.js";
+import { scrollToId } from "../lib/scroll.js";
+
+const CALENDLY_URL =
+  "https://calendly.com/richard-dexkor/richard-meeting?embed_domain=dexkor.com&embed_type=Inline&hide_gdpr_banner=1";
+
+/*
+ * Calendly pre-fills its booking form from the name and email query params.
+ */
+function buildCalendlyUrl({ name, email }) {
+  return `${CALENDLY_URL}&name=${encodeURIComponent(
+    name.trim()
+  )}&email=${encodeURIComponent(email.trim())}`;
+}
 
 const VOLUME_OPTIONS = [
   "50,000 to 75,000",
@@ -24,6 +37,10 @@ const VOLUME_OPTIONS = [
   "5,00,000+",
 ];
 
+const TEXT_MAX_LENGTH = 100;
+const EMAIL_MAX_LENGTH = 254;
+const PHONE_LENGTH = 10;
+
 const FIELDS = [
   {
     name: "name",
@@ -31,6 +48,7 @@ const FIELDS = [
     type: "text",
     autoComplete: "name",
     placeholder: "Your full name",
+    maxLength: TEXT_MAX_LENGTH,
   },
   {
     name: "brand",
@@ -38,6 +56,7 @@ const FIELDS = [
     type: "text",
     autoComplete: "organization",
     placeholder: "The brand you send from",
+    maxLength: TEXT_MAX_LENGTH,
   },
   {
     name: "email",
@@ -46,19 +65,39 @@ const FIELDS = [
     autoComplete: "email",
     placeholder: "you@yourbrand.com",
     inputMode: "email",
+    maxLength: EMAIL_MAX_LENGTH,
   },
   {
     name: "phone",
     label: "Phone Number",
     type: "tel",
     autoComplete: "tel",
-    placeholder: "+91 98765 43210",
-    inputMode: "tel",
+    placeholder: "9876543210",
+    inputMode: "numeric",
   },
 ];
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const PHONE_RE = /^\+?\d{10,15}$/;
+const NAME_RE = /^\p{L}[\p{L}\p{M}' .-]*$/u;
+const BRAND_RE = /[\p{L}\p{N}]/u;
+const EMAIL_RE =
+  /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)*\.[^\s@.]{2,}$/;
+const PHONE_RE = new RegExp(`^\\d{${PHONE_LENGTH}}$`);
+
+/*
+ * Keep digits only, capped at 10. This runs on change rather than using the
+ * maxLength attribute, which would cut a pasted or autofilled
+ * "+91 98765 43210" down to "+91 98765 " before the digits could be read.
+ */
+function sanitizePhone(value) {
+  const digits = value.replace(/\D/g, "");
+
+  const national =
+    digits.length === 12 && digits.startsWith("91")
+      ? digits.slice(2)
+      : digits;
+
+  return national.slice(0, PHONE_LENGTH);
+}
 
 const INITIAL = {
   name: "",
@@ -71,27 +110,44 @@ const INITIAL = {
 function validate(values) {
   const errors = {};
 
-  if (values.name.trim().length < 2) {
+  const name = values.name.trim();
+  const brand = values.brand.trim();
+  const email = values.email.trim();
+
+  if (!name) {
     errors.name = "Enter your name.";
+  } else if (name.length < 2) {
+    errors.name = "Name must be at least 2 characters.";
+  } else if (!NAME_RE.test(name)) {
+    errors.name =
+      "Name can only contain letters, spaces, apostrophes, periods and hyphens.";
   }
 
-  if (values.brand.trim().length < 2) {
+  if (!brand) {
     errors.brand = "Enter your brand name.";
+  } else if (brand.length < 2) {
+    errors.brand =
+      "Brand name must be at least 2 characters.";
+  } else if (!BRAND_RE.test(brand)) {
+    errors.brand =
+      "Brand name must include a letter or number.";
   }
 
-  if (!EMAIL_RE.test(values.email.trim())) {
+  if (!email) {
+    errors.email = "Enter your work email.";
+  } else if (!EMAIL_RE.test(email)) {
     errors.email =
       "Enter a valid work email, like you@yourbrand.com.";
   }
 
-  const cleanedPhone = values.phone.replace(/[\s()-]/g, "");
-
-  if (!PHONE_RE.test(cleanedPhone)) {
+  if (!values.phone) {
+    errors.phone = "Enter your phone number.";
+  } else if (!PHONE_RE.test(values.phone)) {
     errors.phone =
-      "Enter a phone number with 10 to 15 digits.";
+      "Phone number must be exactly 10 digits.";
   }
 
-  if (!values.volume) {
+  if (!VOLUME_OPTIONS.includes(values.volume)) {
     errors.volume =
       "Choose your monthly WhatsApp marketing volume.";
   }
@@ -109,18 +165,41 @@ export default function LeadForm() {
   const submittedRef = useRef(false);
   const fieldRefs = useRef({});
 
+  /*
+   * Get UTM and tracking parameters
+   */
   useEffect(() => {
     setTracking(getTrackingFields());
   }, []);
 
+  /*
+   * Bring Calendly into view once the form has been submitted
+   */
+  useEffect(() => {
+    if (status === "success") {
+      scrollToId("lead-form");
+    }
+  }, [status]);
+
+  /*
+   * Handle field changes
+   */
   const onChange = (e) => {
-    const { name, value } = e.target;
+    const { name } = e.target;
+
+    const value =
+      name === "phone"
+        ? sanitizePhone(e.target.value)
+        : e.target.value;
 
     setValues((prev) => ({
       ...prev,
       [name]: value,
     }));
 
+    /*
+     * Revalidate field after user has touched it
+     */
     if (touched[name]) {
       const updatedValues = {
         ...values,
@@ -143,6 +222,9 @@ export default function LeadForm() {
     }
   };
 
+  /*
+   * Handle field blur
+   */
   const onBlur = (e) => {
     const { name } = e.target;
 
@@ -166,9 +248,15 @@ export default function LeadForm() {
     });
   };
 
+  /*
+   * Handle form submission
+   */
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    /*
+     * Prevent duplicate submission
+     */
     if (
       status === "submitting" ||
       submittedRef.current
@@ -176,6 +264,9 @@ export default function LeadForm() {
       return;
     }
 
+    /*
+     * Validate all fields
+     */
     const fresh = validate(values);
 
     setErrors(fresh);
@@ -188,6 +279,9 @@ export default function LeadForm() {
       volume: true,
     });
 
+    /*
+     * Focus first invalid field
+     */
     const firstError = Object.keys(fresh)[0];
 
     if (firstError) {
@@ -198,20 +292,42 @@ export default function LeadForm() {
     setStatus("submitting");
 
     try {
+      /*
+       * Prepare lead data
+       */
       const leadData = {
         name: values.name.trim(),
+
         brand: values.brand.trim(),
+
         email: values.email.trim(),
-        phone: values.phone
-          .replace(/[\s()-]/g, "")
-          .trim(),
+
+        phone: values.phone,
+
         volume: values.volume,
+
+        /*
+         * UTM / tracking fields
+         */
         ...tracking,
+
+        /*
+         * Additional information
+         */
         timestamp: new Date().toISOString(),
+
         source: "dexkor-whatsapp-cost-audit",
-        subject: "New DexKor Reduce Message Cost Lead",
+
+        /*
+         * Getnos Desk subject
+         */
+        subject:
+          "New DexKor Reduce Message Cost Lead",
       };
 
+      /*
+       * Submit to Getnos Desk
+       */
       const response = await submitLead(leadData);
 
       console.log(
@@ -219,17 +335,28 @@ export default function LeadForm() {
         response
       );
 
+      /*
+       * Mark as submitted
+       */
       submittedRef.current = true;
+
+      /*
+       * Change form to Calendly
+       */
       setStatus("success");
     } catch (error) {
       console.error(
         "[LeadForm] Submission failed:",
         error
       );
+
       setStatus("error");
     }
   };
 
+  /*
+   * Input styles
+   */
   const inputBase =
     "w-full rounded-xl border bg-white px-4 py-3.5 text-[15px] text-ink placeholder:text-muted/70 transition-[border-color,box-shadow] focus:border-electric-500 focus:outline-none focus:ring-4 focus:ring-electric-500/20";
 
@@ -237,6 +364,9 @@ export default function LeadForm() {
     "border-danger focus:border-danger focus:ring-danger/20";
 
   const inputOk = "border-line";
+
+  const isFormValid =
+    Object.keys(validate(values)).length === 0;
 
   return (
     <div
@@ -248,6 +378,11 @@ export default function LeadForm() {
         initial={false}
       >
         {status === "success" ? (
+          /*
+           * =====================================================
+           * CALENDLY AFTER SUCCESSFUL FORM SUBMISSION
+           * =====================================================
+           */
           <motion.div
             key="calendly"
             initial={{
@@ -280,7 +415,7 @@ export default function LeadForm() {
 
             <div className="w-full overflow-hidden rounded-xl">
               <iframe
-                src="https://calendly.com/richard-dexkor/dexkor-demo-call-with-founder?embed_domain=dexkor.com&embed_type=Inline&hide_gdpr_banner=1"
+                src={buildCalendlyUrl(values)}
                 width="100%"
                 height="700"
                 frameBorder="0"
@@ -294,6 +429,11 @@ export default function LeadForm() {
             </div>
           </motion.div>
         ) : (
+          /*
+           * =====================================================
+           * LEAD FORM
+           * =====================================================
+           */
           <motion.form
             key="form"
             initial={false}
@@ -318,6 +458,9 @@ export default function LeadForm() {
               Five fields. Then we do the math.
             </p>
 
+            {/* =================================================
+                FORM FIELDS
+            ================================================== */}
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {FIELDS.map((field) => {
                 const err =
@@ -343,6 +486,7 @@ export default function LeadForm() {
                       name={field.name}
                       type={field.type}
                       inputMode={field.inputMode}
+                      maxLength={field.maxLength}
                       autoComplete={
                         field.autoComplete
                       }
@@ -389,6 +533,9 @@ export default function LeadForm() {
                 );
               })}
 
+              {/* ===============================================
+                  MONTHLY WHATSAPP VOLUME
+              ================================================ */}
               <div className="sm:col-span-2">
                 <label
                   htmlFor="lead-volume"
@@ -488,6 +635,9 @@ export default function LeadForm() {
               </div>
             </div>
 
+            {/* =================================================
+                HIDDEN TRACKING FIELDS
+            ================================================== */}
             {Object.entries(tracking).map(
               ([key, value]) => (
                 <input
@@ -500,6 +650,9 @@ export default function LeadForm() {
               )
             )}
 
+            {/* =================================================
+                ERROR MESSAGE
+            ================================================== */}
             {status === "error" && (
               <div
                 role="alert"
@@ -519,16 +672,26 @@ export default function LeadForm() {
               </div>
             )}
 
+            {/* =================================================
+                SUBMIT BUTTON
+
+                Stays clickable while the form is invalid so a click
+                can reveal every error. onSubmit blocks the request.
+            ================================================== */}
             <div className="mt-6">
               <CTAButton
                 type="submit"
                 size="lg"
                 full
+                className={
+                  isFormValid ? "" : "opacity-60"
+                }
                 disabled={
                   status === "submitting"
                 }
                 aria-disabled={
-                  status === "submitting"
+                  status === "submitting" ||
+                  !isFormValid
                 }
               >
                 {status === "submitting" ? (
@@ -547,6 +710,9 @@ export default function LeadForm() {
               </CTAButton>
             </div>
 
+            {/* =================================================
+                PRIVACY MESSAGE
+            ================================================== */}
             <p className="mt-4 flex items-start gap-2 text-[13px] leading-relaxed text-muted">
               <Lock
                 size={14}
